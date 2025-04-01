@@ -23,20 +23,34 @@ def calcule_caracs():
 root = tk.Tk()
 root.title("Création de Personnage")
 
+## Canvas et scrollbar
+main_frame = tk.Frame(root)
+main_frame.pack(fill=tk.BOTH, expand=True)
+
+canvas = tk.Canvas(main_frame)
+scrollbar = tk.Scrollbar(main_frame, orient=tk.VERTICAL, command=canvas.yview)
+scrollbar.pack(side=tk.RIGHT, fill = tk.Y)
+
+scrollable_frame = tk.Frame(canvas)
+scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+canvas.create_window((0,0), window=scrollable_frame, anchor="nw")
+canvas.configure(yscrollcommand=scrollbar.set)
+canvas.pack(side=tk.LEFT, fill= tk.BOTH, expand=True)
+
 ## Saisie du nom
-tk.Label(root, text="Nom du personnage :").pack()
-nom_perso_saisi = tk.Entry(root)
+tk.Label(scrollable_frame, text="Nom du personnage :").pack()
+nom_perso_saisi = tk.Entry(scrollable_frame)
 nom_perso_saisi.pack()
 
 ## Choix de la race
-tk.Label(root, text="Race :").pack()
+tk.Label(scrollable_frame, text="Race :").pack()
 race_saisi = tk.StringVar(value="Humain")
-race_menu = ttk.Combobox(root, textvariable = race_saisi)
+race_menu = ttk.Combobox(scrollable_frame, textvariable = race_saisi)
 race_menu['values'] = ("Humain", "Barbare")
 race_menu.pack()
 
 ## Répartition des caractéristiques
-tk.Label(root, text = "Répartition des points de caractéristiques :").pack()
+tk.Label(scrollable_frame, text = "Répartition des points de caractéristiques :").pack()
 
 cC_saisi = tk.IntVar(value=0)
 cT_saisi = tk.IntVar(value=0)
@@ -49,48 +63,49 @@ intel_saisi = tk.IntVar(value=0)
 force_ment_saisi = tk.IntVar(value=0)
 socia_saisi = tk.IntVar(value=0)
 
-tk.Label(root, text = "CC :").pack()
-tk.Scale(root, from_ = 0, to = 40, orient = "horizontal", variable = cC_saisi, command = lambda x: points_carac_repartition()).pack()
+tk.Label(scrollable_frame, text = "CC :").pack()
+tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = cC_saisi, command = lambda x: points_carac_repartition()).pack()
 
-tk.Label(root, text = "CT :").pack()
-tk.Scale(root, from_ = 0, to = 40, orient = "horizontal", variable = cT_saisi, command = lambda x: points_carac_repartition()).pack()
+tk.Label(scrollable_frame, text = "CT :").pack()
+tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = cT_saisi, command = lambda x: points_carac_repartition()).pack()
 
-tk.Label(root, text = "Force :").pack()
-tk.Scale(root, from_ = 0, to = 40, orient = "horizontal", variable = force_saisi, command = lambda x: points_carac_repartition()).pack()
+tk.Label(scrollable_frame, text = "Force :").pack()
+tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = force_saisi, command = lambda x: points_carac_repartition()).pack()
 
-tk.Label(root, text = "Endurance :").pack()
-tk.Scale(root, from_ = 0, to = 40, orient = "horizontal", variable = endu_saisi, command = lambda x: points_carac_repartition()).pack()
+tk.Label(scrollable_frame, text = "Endurance :").pack()
+tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = endu_saisi, command = lambda x: points_carac_repartition()).pack()
 
-tk.Label(root, text = "Initiative :").pack()
-tk.Scale(root, from_ = 0, to = 40, orient = "horizontal", variable = init_saisi, command = lambda x: points_carac_repartition()).pack()
+tk.Label(scrollable_frame, text = "Initiative :").pack()
+tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = init_saisi, command = lambda x: points_carac_repartition()).pack()
 
-tk.Label(root, text = "Agilité :").pack()
-tk.Scale(root, from_ = 0, to = 40, orient = "horizontal", variable = agi_saisi, command = lambda x: points_carac_repartition()).pack()
+tk.Label(scrollable_frame, text = "Agilité :").pack()
+tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = agi_saisi, command = lambda x: points_carac_repartition()).pack()
 
-tk.Label(root, text = "Dextérité :").pack()
-tk.Scale(root, from_ = 0, to = 40, orient = "horizontal", variable = dex_saisi, command = lambda x: points_carac_repartition()).pack()
+tk.Label(scrollable_frame, text = "Dextérité :").pack()
+tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = dex_saisi, command = lambda x: points_carac_repartition()).pack()
 
-tk.Label(root, text = "Intelligence :").pack()
-tk.Scale(root, from_ = 0, to = 40, orient = "horizontal", variable = intel_saisi, command = lambda x: points_carac_repartition()).pack()
+tk.Label(scrollable_frame, text = "Intelligence :").pack()
+tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = intel_saisi, command = lambda x: points_carac_repartition()).pack()
 
-tk.Label(root, text = "Force Mentale :").pack()
-tk.Scale(root, from_ = 0, to = 40, orient = "horizontal", variable = force_ment_saisi, command = lambda x: points_carac_repartition()).pack()
+tk.Label(scrollable_frame, text = "Force Mentale :").pack()
+tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = force_ment_saisi, command = lambda x: points_carac_repartition()).pack()
 
-tk.Label(root, text = "Sociabilité :").pack()
-tk.Scale(root, from_ = 0, to = 40, orient = "horizontal", variable = socia_saisi, command = lambda x: points_carac_repartition()).pack()
+tk.Label(scrollable_frame, text = "Sociabilité :").pack()
+tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = socia_saisi, command = lambda x: points_carac_repartition()).pack()
 
 points_restants = tk.StringVar(value = "Points restants : 120")
-tk.Label(root, textvariable=points_restants).pack()
+tk.Label(scrollable_frame, textvariable=points_restants).pack()
 
 ## Avertissement en cas de dépassement
-warning_label = tk.Label(root, text="")
+warning_label = tk.Label(scrollable_frame, text="")
 warning_label.pack()
 
 ## Bouton pour calculer les statistiques
-tk.Button(root, text = "Calculer les caractéristiques", command = calcule_caracs).pack()
+tk.Button(scrollable_frame, text = "Calculer les caractéristiques", command = calcule_caracs).pack()
+
 
 ## Afficher les caracs
-caracs_label = tk.Label(root, text = "")
+caracs_label = tk.Label(scrollable_frame, text = "")
 caracs_label.pack()
 
 root.mainloop()
