@@ -27,7 +27,7 @@ race_menu['values'] = ("Humain", "Barbare", "Nain")
 race_menu.pack()
 
 ## Bouton pour calculer les statistiques
-tk.Button(root, text = "Calculer les caractéristiques", ).pack()
+tk.Button(root, text = "Calculer les caractéristiques", command = calcule_caracs).pack()
 
 ## Afficher les caracs
 caracs_label = tk.Label(root, text = "")
