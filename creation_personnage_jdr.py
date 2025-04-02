@@ -11,14 +11,33 @@ def points_carac_repartition():
 
 def calcule_caracs():
     race = race_saisi.get()
-    if race == "Humain":
-        message = f"Nom : {nom_perso_saisi} \n Race : Humain"
-        message += f" CC : {cC_saisi.get() + 20} \n CT : {cT_saisi.get() + 20} \n Force : {force_saisi.get() + 20} \n Endurance : {endu_saisi.get() + 20} \n Initiative : {init_saisi.get() + 20} \n Agilité : {agi_saisi.get() + 20} \n Dextérité : {dex_saisi.get() + 20} \n Intelligence : {intel_saisi.get() + 20} \n Force Mental : {force_ment_saisi.get() + 20} \n Sociabilité : {socia_saisi.get() + 20} \n Chance : 20"
+    total_reparti = int(cC_saisi.get()) + int(cT_saisi.get()) + int(force_saisi.get()) + int(endu_saisi.get()) + int(init_saisi.get()) + int(agi_saisi.get()) + int(dex_saisi.get()) + int(intel_saisi.get()) + int(force_ment_saisi.get()) + int(socia_saisi.get())
+    if total_reparti > 120:
+        result_label.config(text="La répartirion des points est incorrecte !")
+    else:
+        if race == "Humain":
+            message = f"Nom : {nom_perso_saisi.get()} \n Race : Humain"
+            message += f" CC : {cC_saisi.get() + 20} \n CT : {cT_saisi.get() + 20} \n Force : {force_saisi.get() + 20} \n Endurance : {endu_saisi.get() + 20} \n Initiative : {init_saisi.get() + 20} \n Agilité : {agi_saisi.get() + 20} \n Dextérité : {dex_saisi.get() + 20} \n Intelligence : {intel_saisi.get() + 20} \n Force Mental : {force_ment_saisi.get() + 20} \n Sociabilité : {socia_saisi.get() + 20} \n Chance : 20"
+
+        elif race == "Barbare":
+            message = f"Nom : {nom_perso_saisi.get()} \n Race : Barbare"
+            message += f" CC : {cC_saisi.get() + 30} \n CT : {cT_saisi.get() + 20} \n Force : {force_saisi.get() + 25} \n Endurance : {endu_saisi.get() + 25} \n Initiative : {init_saisi.get() + 20} \n Agilité : {agi_saisi.get() + 20} \n Dextérité : {dex_saisi.get() + 20} \n Intelligence : {intel_saisi.get() + 0} \n Force Mental : {force_ment_saisi.get() + 20} \n Sociabilité : {socia_saisi.get() + 20} \n Chance : 20"
+        result_label.config(text=message )
     
-    elif race == "Humain":
-        message = f"Nom : {nom_perso_saisi} \n Race : Humain"
-        message += f" CC : {cC_saisi.get() + 30} \n CT : {cT_saisi.get() + 20} \n Force : {force_saisi.get() + 25} \n Endurance : {endu_saisi.get() + 25} \n Initiative : {init_saisi.get() + 20} \n Agilité : {agi_saisi.get() + 20} \n Dextérité : {dex_saisi.get() + 20} \n Intelligence : {intel_saisi.get() + 0} \n Force Mental : {force_ment_saisi.get() + 20} \n Sociabilité : {socia_saisi.get() + 20} \n Chance : 20"
-      
+def designation_talent_race():
+    listTalentRace.delete(0, tk.END)
+    race = race_saisi.get()
+    if race == "Humain":
+        talent_race = ["Perspicace ou Sociale", "Destinée", "3 compétences aléatoires"]
+    elif race == "Barbare":
+        talent_race = ["Dure à cuire", "Destinée", "Ambidextre", "Orientation"]
+    else:
+        talent_race = ["Aucun talent associé"]
+
+    for talent in talent_race:
+        listTalentRace.insert(tk.END, talent)
+
+
 ## Crée la fenetre principale
 root = tk.Tk()
 root.title("Création de Personnage")
@@ -48,6 +67,9 @@ race_saisi = tk.StringVar(value="Humain")
 race_menu = ttk.Combobox(scrollable_frame, textvariable = race_saisi)
 race_menu['values'] = ("Humain", "Barbare")
 race_menu.pack()
+
+## variables
+
 
 ## Répartition des caractéristiques
 tk.Label(scrollable_frame, text = "Répartition des points de caractéristiques :").pack()
@@ -101,11 +123,14 @@ warning_label = tk.Label(scrollable_frame, text="")
 warning_label.pack()
 
 ## Bouton pour calculer les statistiques
-tk.Button(scrollable_frame, text = "Calculer les caractéristiques", command = calcule_caracs).pack()
 
+tk.Button(scrollable_frame, text="Afficher les détails", command=lambda: [calcule_caracs(), designation_talent_race()]).pack()
 
 ## Afficher les caracs
-caracs_label = tk.Label(scrollable_frame, text = "")
-caracs_label.pack()
+result_label = tk.Label(scrollable_frame, text = "")
+result_label.pack()
+
+listTalentRace = tk.Listbox(scrollable_frame)
+listTalentRace.pack()
 
 root.mainloop()
