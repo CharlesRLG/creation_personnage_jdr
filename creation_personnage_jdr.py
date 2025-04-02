@@ -38,6 +38,33 @@ def designation_talent_race():
         listTalentRace.insert(tk.END, talent)
 
 
+def afficher_competences():
+    # Récupérer les compétences sélectionnées
+    competences_selectionnees = [listCompetenceRace.get(i) for i in listCompetenceRace.curselection()]
+    if len(competences_selectionnees) > 4:
+        warning_label_comp.config(text="Veuillez sélectionner seulement 4 compétences !", fg="red")
+    else:
+        warning_label_comp.config(text="")
+        message_competences = "Compétences sélectionnées avec bonus:\n"
+        for comp in competences_selectionnees:
+            message_competences += f"{comp} +5\n"
+        result_label.config(text=result_label.cget("text") + "\n" + message_competences)
+
+def designation_competence_race():
+    listCompetenceRace.delete(0, tk.END)
+    race = race_saisi.get()
+    if race == "Humain":
+        competence_race = ["calme", "charme", "commandement", "corp à corp (base)", "Evaluation",
+                           "Langue (aux choix)", "Marchandage", "Projectiles (arc)", "Ragot",
+                           "Savoir (guilde marchande)", "soin des animaux"]
+    elif race == "Barbare":
+        competence_race = ["corp à corp (base)", "Evaluation", "Intimidation", "Projectiles (arc)",
+                           "Ragot", "savoir (guerre)", "soin des animaux", "dressage",
+                           "projectile (improvisé)", "corp à corp (improvisé)"]
+
+    for competence in competence_race:
+        listCompetenceRace.insert(tk.END, competence)
+
 ## Crée la fenetre principale
 root = tk.Tk()
 root.title("Création de Personnage")
@@ -85,35 +112,18 @@ intel_saisi = tk.IntVar(value=0)
 force_ment_saisi = tk.IntVar(value=0)
 socia_saisi = tk.IntVar(value=0)
 
-tk.Label(scrollable_frame, text = "CC :").pack()
-tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = cC_saisi, command = lambda x: points_carac_repartition()).pack()
+carac_frame = tk.Frame(scrollable_frame)
+carac_frame.pack()
 
-tk.Label(scrollable_frame, text = "CT :").pack()
-tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = cT_saisi, command = lambda x: points_carac_repartition()).pack()
-
-tk.Label(scrollable_frame, text = "Force :").pack()
-tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = force_saisi, command = lambda x: points_carac_repartition()).pack()
-
-tk.Label(scrollable_frame, text = "Endurance :").pack()
-tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = endu_saisi, command = lambda x: points_carac_repartition()).pack()
-
-tk.Label(scrollable_frame, text = "Initiative :").pack()
-tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = init_saisi, command = lambda x: points_carac_repartition()).pack()
-
-tk.Label(scrollable_frame, text = "Agilité :").pack()
-tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = agi_saisi, command = lambda x: points_carac_repartition()).pack()
-
-tk.Label(scrollable_frame, text = "Dextérité :").pack()
-tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = dex_saisi, command = lambda x: points_carac_repartition()).pack()
-
-tk.Label(scrollable_frame, text = "Intelligence :").pack()
-tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = intel_saisi, command = lambda x: points_carac_repartition()).pack()
-
-tk.Label(scrollable_frame, text = "Force Mentale :").pack()
-tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = force_ment_saisi, command = lambda x: points_carac_repartition()).pack()
-
-tk.Label(scrollable_frame, text = "Sociabilité :").pack()
-tk.Scale(scrollable_frame, from_ = 0, to = 40, orient = "horizontal", variable = socia_saisi, command = lambda x: points_carac_repartition()).pack()
+# Ajout des caractéristiques sous forme de ligne
+for text, var in [("CC", cC_saisi), ("CT", cT_saisi), ("Force", force_saisi), 
+                  ("Endurance", endu_saisi), ("Initiative", init_saisi), 
+                  ("Agilité", agi_saisi), ("Dextérité", dex_saisi), 
+                  ("Intelligence", intel_saisi), ("Force Mentale", force_ment_saisi), 
+                  ("Sociabilité", socia_saisi)]:
+    tk.Label(carac_frame, text=text + " :").pack(side=tk.LEFT)
+    tk.Scale(carac_frame, from_=0, to=40, orient="vertical", variable=var,
+             command=lambda x: points_carac_repartition()).pack(side=tk.LEFT)
 
 points_restants = tk.StringVar(value = "Points restants : 120")
 tk.Label(scrollable_frame, textvariable=points_restants).pack()
@@ -122,9 +132,22 @@ tk.Label(scrollable_frame, textvariable=points_restants).pack()
 warning_label = tk.Label(scrollable_frame, text="")
 warning_label.pack()
 
+# Boîte pour afficher et sélectionner les compétences
+tk.Label(scrollable_frame, text="Sélectionnez 4 compétences :").pack()
+listCompetenceRace = tk.Listbox(scrollable_frame, selectmode=tk.MULTIPLE)
+listCompetenceRace.pack()
+designation_competence_race()
+
+# Avertissement pour la sélection
+warning_label_comp = tk.Label(scrollable_frame, text="")
+warning_label_comp.pack()
+
 ## Bouton pour calculer les statistiques
 
 tk.Button(scrollable_frame, text="Afficher les détails", command=lambda: [calcule_caracs(), designation_talent_race()]).pack()
+
+# Bouton pour afficher les compétences sélectionnées avec bonus
+tk.Button(scrollable_frame, text="Afficher les compétences sélectionnées", command=afficher_competences).pack()
 
 ## Afficher les caracs
 result_label = tk.Label(scrollable_frame, text = "")
@@ -132,5 +155,6 @@ result_label.pack()
 
 listTalentRace = tk.Listbox(scrollable_frame)
 listTalentRace.pack()
+
 
 root.mainloop()
