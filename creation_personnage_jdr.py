@@ -38,8 +38,7 @@ def designation_talent_race():
         listTalentRace.insert(tk.END, talent)
 
 
-def afficher_competences():
-    # Récupérer les compétences sélectionnées
+def afficher_competences_double_clic(event):
     competences_selectionnees = [listCompetenceRace.get(i) for i in listCompetenceRace.curselection()]
     if len(competences_selectionnees) > 4:
         warning_label_comp.config(text="Veuillez sélectionner seulement 4 compétences !", fg="red")
@@ -48,7 +47,9 @@ def afficher_competences():
         message_competences = "Compétences sélectionnées avec bonus:\n"
         for comp in competences_selectionnees:
             message_competences += f"{comp} +5\n"
-        result_label.config(text=result_label.cget("text") + "\n" + message_competences)
+        # Réinitialiser l'affichage des compétences avant d'ajouter les nouvelles
+        result_text = result_label.cget("text").split("\nCompétences sélectionnées avec bonus:\n")[0]
+        result_label.config(text=result_text + "\n" + message_competences)
 
 def designation_competence_race():
     listCompetenceRace.delete(0, tk.END)
@@ -91,7 +92,8 @@ nom_perso_saisi.pack()
 ## Choix de la race
 tk.Label(scrollable_frame, text="Race :").pack()
 race_saisi = tk.StringVar(value="Humain")
-race_menu = ttk.Combobox(scrollable_frame, textvariable = race_saisi)
+race_menu = ttk.Combobox(scrollable_frame, textvariable=race_saisi)
+race_menu.bind("<<ComboboxSelected>>", lambda e: designation_competence_race())
 race_menu['values'] = ("Humain", "Barbare")
 race_menu.pack()
 
@@ -144,15 +146,17 @@ warning_label_comp.pack()
 
 ## Bouton pour calculer les statistiques
 
-tk.Button(scrollable_frame, text="Afficher les détails", command=lambda: [calcule_caracs(), designation_talent_race()]).pack()
+tk.Button(scrollable_frame, text="Afficher les caractéristiques", command=lambda: [calcule_caracs(), designation_talent_race()]).pack()
 
-# Bouton pour afficher les compétences sélectionnées avec bonus
-tk.Button(scrollable_frame, text="Afficher les compétences sélectionnées", command=afficher_competences).pack()
+#  liaison d'événement compétence
+listCompetenceRace.bind("<Double-Button-1>", afficher_competences_double_clic)
 
 ## Afficher les caracs
+tk.Label(scrollable_frame, text = "Caractéristiques :\n").pack()
 result_label = tk.Label(scrollable_frame, text = "")
 result_label.pack()
 
+tk.Label(scrollable_frame, text = "Talents :\n").pack()
 listTalentRace = tk.Listbox(scrollable_frame)
 listTalentRace.pack()
 
