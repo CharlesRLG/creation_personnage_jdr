@@ -11,18 +11,61 @@ def points_carac_repartition():
 
 def calcule_caracs():
     race = race_saisi.get()
-    total_reparti = int(cC_saisi.get()) + int(cT_saisi.get()) + int(force_saisi.get()) + int(endu_saisi.get()) + int(init_saisi.get()) + int(agi_saisi.get()) + int(dex_saisi.get()) + int(intel_saisi.get()) + int(force_ment_saisi.get()) + int(socia_saisi.get())
+    total_reparti = int(cC_saisi.get()) + int(cT_saisi.get()) + int(force_saisi.get()) + \
+                    int(endu_saisi.get()) + int(init_saisi.get()) + int(agi_saisi.get()) + \
+                    int(dex_saisi.get()) + int(intel_saisi.get()) + int(force_ment_saisi.get()) + \
+                    int(socia_saisi.get())
+    
     if total_reparti > 120:
-        result_label.config(text="La répartirion des points est incorrecte !")
+        result_label.config(text="La répartition des points est incorrecte !")
     else:
-        if race == "Humain":
-            message = f"Nom : {nom_perso_saisi.get()} \n Race : Humain"
-            message += f" CC : {cC_saisi.get() + 20} \n CT : {cT_saisi.get() + 20} \n Force : {force_saisi.get() + 20} \n Endurance : {endu_saisi.get() + 20} \n Initiative : {init_saisi.get() + 20} \n Agilité : {agi_saisi.get() + 20} \n Dextérité : {dex_saisi.get() + 20} \n Intelligence : {intel_saisi.get() + 20} \n Force Mental : {force_ment_saisi.get() + 20} \n Sociabilité : {socia_saisi.get() + 20} \n Chance : 20"
+        caracs = {
+            "CC": int(cC_saisi.get()),
+            "CT": int(cT_saisi.get()),
+            "Force": int(force_saisi.get()),
+            "Endurance": int(endu_saisi.get()),
+            "Initiative": int(init_saisi.get()),
+            "Agilité": int(agi_saisi.get()),
+            "Dextérité": int(dex_saisi.get()),
+            "Intelligence": int(intel_saisi.get()),
+            "Force Mentale": int(force_ment_saisi.get()),
+            "Sociabilité": int(socia_saisi.get())
+        }
 
-        elif race == "Barbare":
-            message = f"Nom : {nom_perso_saisi.get()} \n Race : Barbare"
-            message += f" CC : {cC_saisi.get() + 30} \n CT : {cT_saisi.get() + 20} \n Force : {force_saisi.get() + 25} \n Endurance : {endu_saisi.get() + 25} \n Initiative : {init_saisi.get() + 20} \n Agilité : {agi_saisi.get() + 20} \n Dextérité : {dex_saisi.get() + 20} \n Intelligence : {intel_saisi.get() + 0} \n Force Mental : {force_ment_saisi.get() + 20} \n Sociabilité : {socia_saisi.get() + 20} \n Chance : 20"
-        result_label.config(text=message )
+        bonuses = {
+            "Humain": {key: 20 for key in caracs},  # Bonus uniformes pour chaque caractéristique
+            "Barbare": {"CC": 30, "CT": 20, "Force": 25, "Endurance": 25, "Initiative": 20,
+                        "Agilité": 20, "Dextérité": 20, "Intelligence": 0, "Force Mentale": 20, "Sociabilité": 20}
+        }
+
+        # Appliquer les bonus
+        message = f"Nom : {nom_perso_saisi.get()}\nRace : {race}\n\nCaractéristiques avec bonus :\n"
+        for key, value in caracs.items():
+            bonus = bonuses[race].get(key, 0)
+            final_value = value + bonus
+            message += f"{key}: {value} (Bonus: +{bonus}) = {final_value}\n"
+
+            # Vérification des limites de caractéristiques
+            if final_value < 10 or final_value > 60:
+                result_label.config(text=f"Erreur : la caractéristique {key} ({final_value}) est hors limites !")
+                return
+
+        result_label.config(text=message)
+        
+        # Validation pour chaque caractéristique
+        for key, value in caracs.items():
+            final_value = value + (bonuses["Humain"] if race == "Humain" else bonuses["Barbare"].get(key, 20))
+            if final_value < 10 or final_value > 60:
+                result_label.config(text=f"Erreur : la caractéristique {key} ({final_value}) est hors limites ! Doit être compris entre 10 et 60")
+                return
+
+        # Génération du message final
+        message = f"Nom : {nom_perso_saisi.get()} \n Race : {race}\n"
+        for key, value in caracs.items():
+            bonus = bonuses["Humain"] if race == "Humain" else bonuses["Barbare"].get(key, 20)
+            message += f"{key} : {value + bonus}\n"
+
+        result_label.config(text=message)
     
 def designation_talent_race():
     listTalentRace.delete(0, tk.END)
@@ -41,7 +84,7 @@ def designation_talent_race():
 def afficher_competences_double_clic(event):
     competences_selectionnees = [listCompetenceRace.get(i) for i in listCompetenceRace.curselection()]
     if len(competences_selectionnees) > 4:
-        warning_label_comp.config(text="Veuillez sélectionner seulement 4 compétences !", fg="red")
+        warning_label_comp.config(text="Veuillez sélectionner seulement 4 compétences ! (Double clic pour sélectionner)", fg="red")
     else:
         warning_label_comp.config(text="")
         message_competences = "Compétences sélectionnées avec bonus:\n"
@@ -50,6 +93,7 @@ def afficher_competences_double_clic(event):
         # Réinitialiser l'affichage des compétences avant d'ajouter les nouvelles
         result_text = result_label.cget("text").split("\nCompétences sélectionnées avec bonus:\n")[0]
         result_label.config(text=result_text + "\n" + message_competences)
+
 
 def designation_competence_race():
     listCompetenceRace.delete(0, tk.END)
@@ -65,6 +109,8 @@ def designation_competence_race():
 
     for competence in competence_race:
         listCompetenceRace.insert(tk.END, competence)
+
+
 
 ## Crée la fenetre principale
 root = tk.Tk()
