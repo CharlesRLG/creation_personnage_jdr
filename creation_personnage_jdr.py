@@ -73,7 +73,7 @@ def designation_talent_race():
     listTalentRace.delete(0, tk.END)
     race = race_saisi.get()
     if race == "Humain":
-        talent_race = ["Perspicace ou Sociale", "Destinée", "3 compétences aléatoires"]
+        talent_race = ["Perspicace", "Destinée", "3 compétences aléatoires"]
     elif race == "Barbare":
         talent_race = ["Dure à cuire", "Destinée", "Ambidextre", "Orientation"]
 
@@ -84,11 +84,11 @@ def designation_talent_statut():
     listTalentStatut.delete(0, tk.END)
     statut_social = statut_social_saisi.get()
     if statut_social == "Citadin":
-        talent_statut_social = ["Perspicace ou Sociale", "Destinée", "3 compétences aléatoires"]
+        talent_statut_social = ["Lire/Ecrire", "Sociable", "faire la manche", "négociateur", "baratin"]
     elif statut_social == "Courtisan":
-        talent_statut_social = ["Dure à cuire", "Destinée", "Ambidextre", "Orientation"]
+        talent_statut_social = ["Lire/Ecrire", "savoir vivre (noble)", "discret", "sociable", "résistance (maladie)"]
     elif statut_social == "Guerrier":
-        talent_statut_social = ["Dure à cuire", "Destinée", "Ambidextre", "Orientation"]
+        talent_statut_social = ["Maitrise des dés", "guerrier-nés", "costaud", "déterminé", "infatigable"]
 
     for talentStatut in talent_statut_social:
         listTalentStatut.insert(tk.END, talentStatut)
@@ -121,6 +121,33 @@ def designation_competence_race():
 
     for competence in competence_race:
         listCompetenceRace.insert(tk.END, competence)
+
+def afficher_competences_statut_double_clic(event):
+    competences_statut_selectionnees = [listCompetenceStatut.get(i) for i in listCompetenceStatut.curselection()]
+    if len(competences_statut_selectionnees) > 3:
+        warning_label_comp.config(text="Veuillez sélectionner seulement 3 compétences ! (Double clic pour sélectionner)", fg="red")
+    else:
+        warning_label_comp.config(text="")
+        message_competences = "Compétences sélectionnées avec bonus:\n"
+        for comp in competences_statut_selectionnees:
+            message_competences += f"{comp} +5\n"
+        # Réinitialiser l'affichage des compétences avant d'ajouter les nouvelles
+        result_text = result_label.cget("text").split("\nCompétences sélectionnées avec bonus:\n")[0]
+        result_label.config(text=result_text + "\n" + message_competences)
+
+
+def designation_competence_statut():
+    listCompetenceStatut.delete(0, tk.END)
+    statut_social = statut_social_saisi.get()
+    if statut_social == "Citadin":
+        competence_statut = ["A","B"]
+    elif statut_social == "Courtisan":
+        competence_statut = ["V", "C"]
+    elif statut_social == "Guerrier":
+        competence_statut = ["H", "I", "Intimidation"]
+
+    for competence_soc in competence_statut:
+        listCompetenceStatut.insert(tk.END, competence_soc)
 
 ## Crée la fenetre principale
 root = tk.Tk()
@@ -157,7 +184,7 @@ race_menu.pack()
 tk.Label(scrollable_frame, text="Statut Social :").pack()
 statut_social_saisi = tk.StringVar(value="Citadin")
 statut_menu = ttk.Combobox(scrollable_frame, textvariable=statut_social_saisi)
-statut_menu.bind("<<ComboboxSelected>>", lambda e: designation_talent_statut())
+statut_menu.bind("<<ComboboxSelected>>", lambda e: [designation_talent_statut(), designation_competence_statut()])
 statut_menu['values'] = ("Citadin", "Courtisan", "Guerrier")
 statut_menu.pack()
 
@@ -201,6 +228,12 @@ listCompetenceRace = tk.Listbox(scrollable_frame, selectmode=tk.MULTIPLE)
 listCompetenceRace.pack()
 designation_competence_race()
 
+# Boîte pour afficher et sélectionner les compétences socials
+tk.Label(scrollable_frame, text="Sélectionnez 3 compétences :").pack()
+listCompetenceStatut = tk.Listbox(scrollable_frame, selectmode=tk.MULTIPLE)
+listCompetenceStatut.pack()
+designation_competence_statut()
+
 # Avertissement pour la sélection
 warning_label_comp = tk.Label(scrollable_frame, text="")
 warning_label_comp.pack()
@@ -211,6 +244,9 @@ tk.Button(scrollable_frame, text="Afficher les caractéristiques", command=lambd
 
 #  liaison d'événement compétence
 listCompetenceRace.bind("<Double-Button-1>", afficher_competences_double_clic)
+
+#  liaison d'événement compétence statut
+listCompetenceStatut.bind("<Double-Button-1>", afficher_competences_statut_double_clic)
 
 ## Afficher les caracs
 tk.Label(scrollable_frame, text = "Caractéristiques :\n").pack()
