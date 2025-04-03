@@ -11,6 +11,7 @@ def points_carac_repartition():
 
 def calcule_caracs():
     race = race_saisi.get()
+    statut_social = statut_social_saisi.get()
     total_reparti = int(cC_saisi.get()) + int(cT_saisi.get()) + int(force_saisi.get()) + \
                     int(endu_saisi.get()) + int(init_saisi.get()) + int(agi_saisi.get()) + \
                     int(dex_saisi.get()) + int(intel_saisi.get()) + int(force_ment_saisi.get()) + \
@@ -33,7 +34,8 @@ def calcule_caracs():
         }
 
         bonuses = {
-            "Humain": {key: 20 for key in caracs},  # Bonus uniformes pour chaque caractéristique
+            "Humain": {"CC": 20, "CT": 20, "Force": 20, "Endurance": 20, "Initiative": 20,
+                        "Agilité": 20, "Dextérité": 20, "Intelligence": 20, "Force Mentale": 20, "Sociabilité": 20},
             "Barbare": {"CC": 30, "CT": 20, "Force": 25, "Endurance": 25, "Initiative": 20,
                         "Agilité": 20, "Dextérité": 20, "Intelligence": 0, "Force Mentale": 20, "Sociabilité": 20}
         }
@@ -43,7 +45,7 @@ def calcule_caracs():
         for key, value in caracs.items():
             bonus = bonuses[race].get(key, 0)
             final_value = value + bonus
-            message += f"{key}: {value} (Bonus: +{bonus}) = {final_value}\n"
+            message += f"{key}: {final_value}\n"
 
             # Vérification des limites de caractéristiques
             if final_value < 10 or final_value > 60:
@@ -51,7 +53,7 @@ def calcule_caracs():
                 return
 
         result_label.config(text=message)
-        
+    
         # Validation pour chaque caractéristique
         for key, value in caracs.items():
             final_value = value + (bonuses["Humain"] if race == "Humain" else bonuses["Barbare"].get(key, 20))
@@ -60,10 +62,10 @@ def calcule_caracs():
                 return
 
         # Génération du message final
-        message = f"Nom : {nom_perso_saisi.get()} \n Race : {race}\n"
+        message = f"Nom : {nom_perso_saisi.get()} \n Statut Social : {statut_social} \n Race : {race}\n"
         for key, value in caracs.items():
             bonus = bonuses["Humain"] if race == "Humain" else bonuses["Barbare"].get(key, 20)
-            message += f"{key} : {value + bonus}\n"
+            message += f"{key} : {value + bonus}\n"   
 
         result_label.config(text=message)
     
@@ -74,12 +76,22 @@ def designation_talent_race():
         talent_race = ["Perspicace ou Sociale", "Destinée", "3 compétences aléatoires"]
     elif race == "Barbare":
         talent_race = ["Dure à cuire", "Destinée", "Ambidextre", "Orientation"]
-    else:
-        talent_race = ["Aucun talent associé"]
 
     for talent in talent_race:
         listTalentRace.insert(tk.END, talent)
 
+def designation_talent_statut():
+    listTalentStatut.delete(0, tk.END)
+    statut_social = statut_social_saisi.get()
+    if statut_social == "Citadin":
+        talent_statut_social = ["Perspicace ou Sociale", "Destinée", "3 compétences aléatoires"]
+    elif statut_social == "Courtisan":
+        talent_statut_social = ["Dure à cuire", "Destinée", "Ambidextre", "Orientation"]
+    elif statut_social == "Guerrier":
+        talent_statut_social = ["Dure à cuire", "Destinée", "Ambidextre", "Orientation"]
+
+    for talentStatut in talent_statut_social:
+        listTalentStatut.insert(tk.END, talentStatut)
 
 def afficher_competences_double_clic(event):
     competences_selectionnees = [listCompetenceRace.get(i) for i in listCompetenceRace.curselection()]
@@ -110,8 +122,6 @@ def designation_competence_race():
     for competence in competence_race:
         listCompetenceRace.insert(tk.END, competence)
 
-
-
 ## Crée la fenetre principale
 root = tk.Tk()
 root.title("Création de Personnage")
@@ -139,12 +149,17 @@ nom_perso_saisi.pack()
 tk.Label(scrollable_frame, text="Race :").pack()
 race_saisi = tk.StringVar(value="Humain")
 race_menu = ttk.Combobox(scrollable_frame, textvariable=race_saisi)
-race_menu.bind("<<ComboboxSelected>>", lambda e: designation_competence_race())
+race_menu.bind("<<ComboboxSelected>>", lambda e: [designation_competence_race(), designation_talent_race()])
 race_menu['values'] = ("Humain", "Barbare")
 race_menu.pack()
 
-## variables
-
+# Choix du statut social
+tk.Label(scrollable_frame, text="Statut Social :").pack()
+statut_social_saisi = tk.StringVar(value="Citadin")
+statut_menu = ttk.Combobox(scrollable_frame, textvariable=statut_social_saisi)
+statut_menu.bind("<<ComboboxSelected>>", lambda e: designation_talent_statut())
+statut_menu['values'] = ("Citadin", "Courtisan", "Guerrier")
+statut_menu.pack()
 
 ## Répartition des caractéristiques
 tk.Label(scrollable_frame, text = "Répartition des points de caractéristiques :").pack()
@@ -192,7 +207,7 @@ warning_label_comp.pack()
 
 ## Bouton pour calculer les statistiques
 
-tk.Button(scrollable_frame, text="Afficher les caractéristiques", command=lambda: [calcule_caracs(), designation_talent_race()]).pack()
+tk.Button(scrollable_frame, text="Afficher les caractéristiques", command=lambda: [calcule_caracs(), designation_talent_race(), designation_talent_statut]).pack()
 
 #  liaison d'événement compétence
 listCompetenceRace.bind("<Double-Button-1>", afficher_competences_double_clic)
@@ -202,9 +217,12 @@ tk.Label(scrollable_frame, text = "Caractéristiques :\n").pack()
 result_label = tk.Label(scrollable_frame, text = "")
 result_label.pack()
 
-tk.Label(scrollable_frame, text = "Talents :\n").pack()
+tk.Label(scrollable_frame, text = "Talents Race :\n").pack()
 listTalentRace = tk.Listbox(scrollable_frame)
 listTalentRace.pack()
 
+tk.Label(scrollable_frame, text = "Talents Statut Social :\n").pack()
+listTalentStatut = tk.Listbox(scrollable_frame)
+listTalentStatut.pack()
 
 root.mainloop()
