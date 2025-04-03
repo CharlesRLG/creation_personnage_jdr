@@ -99,7 +99,7 @@ def afficher_competences_double_clic(event):
         warning_label_comp.config(text="Veuillez sélectionner seulement 4 compétences ! (Double clic pour sélectionner)", fg="red")
     else:
         warning_label_comp.config(text="")
-        message_competences = "Compétences sélectionnées avec bonus:\n"
+        message_competences = "Compétences raciales sélectionnées avec bonus:\n"
         for comp in competences_selectionnees:
             message_competences += f"{comp} +5\n"
         # Réinitialiser l'affichage des compétences avant d'ajouter les nouvelles
@@ -125,26 +125,36 @@ def designation_competence_race():
 def afficher_competences_statut_double_clic(event):
     competences_statut_selectionnees = [listCompetenceStatut.get(i) for i in listCompetenceStatut.curselection()]
     if len(competences_statut_selectionnees) > 3:
-        warning_label_comp.config(text="Veuillez sélectionner seulement 3 compétences ! (Double clic pour sélectionner)", fg="red")
+        warning_label_comp_statut.config(text="Veuillez sélectionner seulement 3 compétences ! (Double clic pour sélectionner)", fg="red")
     else:
-        warning_label_comp.config(text="")
-        message_competences = "Compétences sélectionnées avec bonus:\n"
-        for comp in competences_statut_selectionnees:
-            message_competences += f"{comp} +5\n"
+        warning_label_comp_statut.config(text="")
+        
+        # Récupérer le texte actuel affiché
+        texte_actuel = result_label.cget("text")
+        
+        # Si les compétences de statut sont déjà affichées, les supprimer
+        if "\nCompétences de statut avec bonus:\n" in texte_actuel:
+            texte_actuel = texte_actuel.split("\nCompétences de statut avec bonus:\n")[0]
+        
+        # Ajouter les nouvelles compétences de statut sélectionnées
+        message_competences_statut = "\nCompétences de statut avec bonus:\n"
+        for comp_statut in competences_statut_selectionnees:
+            message_competences_statut += f"{comp_statut} +5\n"
+
         # Réinitialiser l'affichage des compétences avant d'ajouter les nouvelles
-        result_text = result_label.cget("text").split("\nCompétences sélectionnées avec bonus:\n")[0]
-        result_label.config(text=result_text + "\n" + message_competences)
+        
+        result_label.config(text=texte_actuel + message_competences_statut)
 
 
 def designation_competence_statut():
     listCompetenceStatut.delete(0, tk.END)
     statut_social = statut_social_saisi.get()
     if statut_social == "Citadin":
-        competence_statut = ["A","B"]
+        competence_statut = ["Art (aux choix)","charme","marchandage","métier (aux choix)","résistance à l'alcool","esquive","escalade","ragot","pari"]
     elif statut_social == "Courtisan":
-        competence_statut = ["V", "C"]
+        competence_statut = ["calme", "art (aux choix)", "discrétion urbaine", "évaluation","corp à corp (base)", "dressage (chien)", "guérison", "savoir (politique)", "esquive", "chevaucher (chevale)"]
     elif statut_social == "Guerrier":
-        competence_statut = ["H", "I", "Intimidation"]
+        competence_statut = ["corps à corps (base)", "esquive", "chevaucher (cheval)", "parie", "résistance", "intuition", "métier (aux choix)", "commandement", "intimidation", "athlétisme"]
 
     for competence_soc in competence_statut:
         listCompetenceStatut.insert(tk.END, competence_soc)
@@ -237,6 +247,10 @@ designation_competence_statut()
 # Avertissement pour la sélection
 warning_label_comp = tk.Label(scrollable_frame, text="")
 warning_label_comp.pack()
+
+# Avertissement pour la sélection
+warning_label_comp_statut = tk.Label(scrollable_frame, text="")
+warning_label_comp_statut.pack()
 
 ## Bouton pour calculer les statistiques
 
