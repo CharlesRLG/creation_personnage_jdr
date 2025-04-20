@@ -93,23 +93,33 @@ def designation_talent_statut():
     for talentStatut in talent_statut_social:
         listTalentStatut.insert(tk.END, talentStatut)
 
+
 def afficher_competences_double_clic(event):
+    # Récupérer les compétences sélectionnées dans le Listbox
     competences_selectionnees = [listCompetenceRace.get(i) for i in listCompetenceRace.curselection()]
+    
+    # Vérifier si l'utilisateur dépasse la limite de 4 compétences sélectionnées
     if len(competences_selectionnees) > 4:
-        warning_label_comp.config(text="Veuillez sélectionner seulement 4 compétences ! (Double clic pour sélectionner)", fg="red")
+        warning_label_comp.config(text="Veuillez sélectionner seulement 4 compétences !", fg="red")
     else:
         warning_label_comp.config(text="")
+        
+        # Reconstruire uniquement l'affichage nécessaire
         message_competences = "Compétences raciales sélectionnées avec bonus:\n"
         for comp in competences_selectionnees:
             message_competences += f"{comp} +5\n"
-        # Réinitialiser l'affichage des compétences avant d'ajouter les nouvelles
-        result_text = result_label.cget("text").split("\nCompétences sélectionnées avec bonus:\n")[0]
-        result_label.config(text=result_text + "\n" + message_competences)
+        
+        # Mettre à jour le label avec seulement le message des compétences
+        texte_base = result_label.cget("text").split("\nCompétences raciales sélectionnées avec bonus:\n")[0]
+        result_label.config(text=f"{texte_base}\n{message_competences}")
+
 
 
 def designation_competence_race():
+    # Vider le contenu du Listbox avant d'ajouter les nouvelles compétences
     listCompetenceRace.delete(0, tk.END)
-    race = race_saisi.get()
+    
+    race = race_saisi.get()  # Récupérer la race sélectionnée
     if race == "Humain":
         competence_race = ["calme", "charme", "commandement", "corp à corp (base)", "Evaluation",
                            "Langue (aux choix)", "Marchandage", "Projectiles (arc)", "Ragot",
@@ -119,8 +129,11 @@ def designation_competence_race():
                            "Ragot", "savoir (guerre)", "soin des animaux", "dressage",
                            "projectile (improvisé)", "corp à corp (improvisé)"]
 
+    # Ajouter les nouvelles compétences dans le Listbox
     for competence in competence_race:
         listCompetenceRace.insert(tk.END, competence)
+
+
 
 def afficher_competences_statut_double_clic(event):
     competences_statut_selectionnees = [listCompetenceStatut.get(i) for i in listCompetenceStatut.curselection()]
