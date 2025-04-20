@@ -190,6 +190,21 @@ def designation_competence_statut():
     for competence_soc in competence_statut:
         listCompetenceStatut.insert(tk.END, competence_soc)
 
+def designation_equipement_statut():
+    listEquipementStatut.delete(0, tk.END)
+    statut_social = statut_social_saisi.get()
+    if statut_social == "Citadin":
+        equipement_statut = ["jojo","3","E"]
+    elif statut_social == "Courtisan":
+        equipement_statut = ["kaki","2","A"]
+    elif statut_social == "Guerrier":
+        equipement_statut = ["dague","E","D"]
+
+    for equipement_soc in equipement_statut:
+        listEquipementStatut.insert(tk.END, equipement_soc)
+        
+
+
 ## Crée la fenetre principale
 root = tk.Tk()
 root.title("Création de Personnage")
@@ -225,7 +240,7 @@ race_menu.pack()
 tk.Label(scrollable_frame, text="Statut Social :").pack()
 statut_social_saisi = tk.StringVar(value="Citadin")
 statut_menu = ttk.Combobox(scrollable_frame, textvariable=statut_social_saisi)
-statut_menu.bind("<<ComboboxSelected>>", lambda e: [designation_talent_statut(), designation_competence_statut()])
+statut_menu.bind("<<ComboboxSelected>>", lambda e: [designation_talent_statut(), designation_competence_statut(), designation_equipement_statut()])
 statut_menu['values'] = ("Citadin", "Courtisan", "Guerrier")
 statut_menu.pack()
 
@@ -311,6 +326,11 @@ result_label.pack()
 tk.Label(scrollable_frame, text = "Talents Race :\n").pack()
 listTalentRace = tk.Listbox(scrollable_frame)
 listTalentRace.pack()
+
+## Afficher les equipements
+tk.Label(scrollable_frame, text = "Equipement statut social : \n").pack()
+listEquipementStatut = tk.Listbox(scrollable_frame)
+listEquipementStatut.pack()
 
 # liason d'événement statut social
 listTalentStatut.bind("<Double-Button-1>", afficher_talent_statut_social)
