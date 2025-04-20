@@ -221,6 +221,10 @@ def sauvegarder_pdf():
     race_personnage = race_saisi.get()
     statut_social_personnage = statut_social_saisi.get()
     texte_caracteristiques = result_label.cget("text")  # Récupère le texte des caractéristiques affichées
+
+    # Récupérer uniquement les compétences sélectionnées
+    competenceRace = [listCompetenceRace.get(i) for i in listCompetenceRace.curselection()]
+    competenceStatut = [listCompetenceStatut.get(i) for i in listCompetenceStatut.curselection()]
     equipement_personnage = listEquipementStatut.get(0, tk.END)
 
     # Utiliser un nom par défaut si le champ du nom est vide
@@ -250,9 +254,9 @@ def sauvegarder_pdf():
         c.drawString(100, hauteur, ligne)
         hauteur -= 20
         
-    #Ajout des équipements
-    c.drawString(300, 680, "Equipements :")
-    hauteur = 660
+    # Ajout des équipements
+    c.drawString(300, 740, "Equipements :")
+    hauteur = 720
     for item in equipement_personnage:
         c.drawString(300, hauteur, f"- {item}")
         hauteur -= 20
@@ -261,7 +265,6 @@ def sauvegarder_pdf():
     # Finalisation et sauvegarde
     c.save()
     print(f"PDF sauvegardé sous le nom {fichier_pdf}")
-
 
 ## Crée la fenetre principale
 root = tk.Tk()
@@ -336,6 +339,11 @@ tk.Label(scrollable_frame, textvariable=points_restants).pack()
 warning_label = tk.Label(scrollable_frame, text="")
 warning_label.pack()
 
+## Bouton pour calculer les statistiques
+
+tk.Button(scrollable_frame, text="Afficher les caractéristiques", command=lambda: [calcule_caracs(), designation_talent_race()]).pack()
+
+
 # Boîte pour afficher et sélectionner les compétences
 tk.Label(scrollable_frame, text="Sélectionnez 4 compétences :").pack()
 listCompetenceRace = tk.Listbox(scrollable_frame, selectmode=tk.MULTIPLE)
@@ -365,10 +373,6 @@ warning_label_comp_statut.pack()
 # Avertissement pour la selection talent statut
 warning_label_tal = tk.Label(scrollable_frame, text="")
 warning_label_tal.pack()
-
-## Bouton pour calculer les statistiques
-
-tk.Button(scrollable_frame, text="Afficher les caractéristiques", command=lambda: [calcule_caracs(), designation_talent_race()]).pack()
 
 #  liaison d'événement compétence
 listCompetenceRace.bind("<Double-Button-1>", afficher_competences_double_clic)
