@@ -93,6 +93,24 @@ def designation_talent_statut():
     for talentStatut in talent_statut_social:
         listTalentStatut.insert(tk.END, talentStatut)
 
+def afficher_talent_statut_social(event):
+    # Récupérer les compétences sélectionnées dans le Listbox
+    talent_selectionnees = [listTalentStatut.get(i) for i in listTalentStatut.curselection()]
+    
+    # Vérifier si l'utilisateur dépasse la limite de 1 talent social sélectionné
+    if len(talent_selectionnees) > 1:
+        warning_label_tal.config(text="Veuillez sélectionner seulement 1 talent social !", fg="red")
+    else:
+        warning_label_tal.config(text="")
+        
+        # Reconstruire uniquement l'affichage nécessaire
+        message_talent = "Talent social sélectionnées :\n"
+        for tal in talent_selectionnees:
+            message_talent += f"{tal}\n"
+        
+        # Mettre à jour le label avec seulement le message des compétences
+        texte_base = result_label.cget("text").split("\nTalent social sélectionnées :\n")[0]
+        result_label.config(text=f"{texte_base}\n{message_talent}")
 
 def afficher_competences_double_clic(event):
     # Récupérer les compétences sélectionnées dans le Listbox
@@ -257,6 +275,12 @@ listCompetenceStatut = tk.Listbox(scrollable_frame, selectmode=tk.MULTIPLE)
 listCompetenceStatut.pack()
 designation_competence_statut()
 
+# Boîte pour afficher et séectionner le statut social
+tk.Label(scrollable_frame, text="Sélectionnez 1 Talent social :").pack()
+listTalentStatut = tk.Listbox(scrollable_frame, selectmode=tk.MULTIPLE)
+listTalentStatut.pack()
+designation_talent_statut()
+
 # Avertissement pour la sélection
 warning_label_comp = tk.Label(scrollable_frame, text="")
 warning_label_comp.pack()
@@ -265,9 +289,13 @@ warning_label_comp.pack()
 warning_label_comp_statut = tk.Label(scrollable_frame, text="")
 warning_label_comp_statut.pack()
 
+# Avertissement pour la selection talent statut
+warning_label_tal = tk.Label(scrollable_frame, text="")
+warning_label_tal.pack()
+
 ## Bouton pour calculer les statistiques
 
-tk.Button(scrollable_frame, text="Afficher les caractéristiques", command=lambda: [calcule_caracs(), designation_talent_race(), designation_talent_statut]).pack()
+tk.Button(scrollable_frame, text="Afficher les caractéristiques", command=lambda: [calcule_caracs(), designation_talent_race()]).pack()
 
 #  liaison d'événement compétence
 listCompetenceRace.bind("<Double-Button-1>", afficher_competences_double_clic)
@@ -284,8 +312,7 @@ tk.Label(scrollable_frame, text = "Talents Race :\n").pack()
 listTalentRace = tk.Listbox(scrollable_frame)
 listTalentRace.pack()
 
-tk.Label(scrollable_frame, text = "Talents Statut Social :\n").pack()
-listTalentStatut = tk.Listbox(scrollable_frame)
-listTalentStatut.pack()
+# liason d'événement statut social
+listTalentStatut.bind("<Double-Button-1>", afficher_talent_statut_social)
 
 root.mainloop()
