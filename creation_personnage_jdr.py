@@ -1,5 +1,16 @@
 import tkinter as tk
 from tkinter import ttk
+import random
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas as pdf_canvas
+
+PA_citadin = random.randint(1,16)
+PC_citadin = random.randint(1,10)
+PO_courtisan = random.randint(1,10)
+PA_courtisan = random.randint(1,15)
+PC_courtisan = random.randint(1,12)
+PA_guerrier = random.randint(1,8)
+PC_guerrier = random.randint(1,10)
 
 def points_carac_repartition():
     total_reparti = int(cC_saisi.get()) + int(cT_saisi.get()) + int(force_saisi.get()) + int(endu_saisi.get()) + int(init_saisi.get()) + int(agi_saisi.get()) + int(dex_saisi.get()) + int(intel_saisi.get()) + int(force_ment_saisi.get()) + int(socia_saisi.get())
@@ -194,15 +205,53 @@ def designation_equipement_statut():
     listEquipementStatut.delete(0, tk.END)
     statut_social = statut_social_saisi.get()
     if statut_social == "Citadin":
-        equipement_statut = ["jojo","3","E"]
+        equipement_statut = ["Cape","Vêtements de base","Dague","chapeau","1 ration","bourse :", f"{PA_citadin} PA", f"{PC_citadin} PC", "besace"]
     elif statut_social == "Courtisan":
-        equipement_statut = ["kaki","2","A"]
+        equipement_statut = ["Costume luxueux","Dague","Bourse de luxe :","une pince à épiler","un cure oreilles","un peigne",f"{PO_courtisan} PO",f"{PA_courtisan} PA",f"{PC_courtisan} PC"]
     elif statut_social == "Guerrier":
-        equipement_statut = ["dague","E","D"]
+        equipement_statut = ["Vêtements délabré","Arme 1 main + bouclier"," ou arme 2 mains","dague",f"{PA_guerrier} PA",f"{PC_guerrier} PC"]
 
     for equipement_soc in equipement_statut:
         listEquipementStatut.insert(tk.END, equipement_soc)
         
+## \\\\\\\\\\\\\\\\\\\\\ sauvegarde du perso /////////////////////
+
+def sauvegarder_pdf():
+    nom_personnage = nom_perso_saisi.get()
+    race_personnage = race_saisi.get()
+    statut_social_personnage = statut_social_saisi.get()
+    texte_caracteristiques = result_label.cget("text")  # Récupère le texte des caractéristiques affichées
+
+    # Utiliser un nom par défaut si le champ du nom est vide
+    if not nom_personnage.strip():
+        nom_personnage = "Personnage_sans_nom"
+
+    # Nettoyer le nom pour éviter les caractères invalides dans les noms de fichiers
+    nom_personnage = "".join(c if c.isalnum() or c in ("_", "-") else "_" for c in nom_personnage)
+
+    # Chemin et nom du fichier PDF
+    fichier_pdf = f"{nom_personnage}_fiche_personnage.pdf"
+    
+    # Création du PDF
+    c = pdf_canvas.Canvas(fichier_pdf, pagesize=A4)
+    c.setFont("Helvetica", 12)
+    
+    # Titre
+    c.drawString(100, 800, f"Fiche de Personnage : {nom_personnage}")
+    c.drawString(100, 780, f"Race : {race_personnage}")
+    c.drawString(100, 760, f"Statut Social : {statut_social_personnage}")
+    
+    # Ajout des caractéristiques
+    c.drawString(100, 740, "Caractéristiques :")
+    lignes = texte_caracteristiques.split("\n")
+    hauteur = 720
+    for ligne in lignes:
+        c.drawString(100, hauteur, ligne)
+        hauteur -= 20
+    
+    # Finalisation et sauvegarde
+    c.save()
+    print(f"PDF sauvegardé sous le nom {fichier_pdf}")
 
 
 ## Crée la fenetre principale
@@ -334,5 +383,9 @@ listEquipementStatut.pack()
 
 # liason d'événement statut social
 listTalentStatut.bind("<Double-Button-1>", afficher_talent_statut_social)
+
+# Sauvegrder un pdf du perso
+tk.Button(scrollable_frame, text="Sauvegarder en PDF", command=sauvegarder_pdf).pack()
+
 
 root.mainloop()
