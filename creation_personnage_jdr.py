@@ -221,6 +221,7 @@ def sauvegarder_pdf():
     race_personnage = race_saisi.get()
     statut_social_personnage = statut_social_saisi.get()
     texte_caracteristiques = result_label.cget("text")  # Récupère le texte des caractéristiques affichées
+    equipement_personnage = listEquipementStatut.get(0, tk.END)
 
     # Utiliser un nom par défaut si le champ du nom est vide
     if not nom_personnage.strip():
@@ -248,6 +249,14 @@ def sauvegarder_pdf():
     for ligne in lignes:
         c.drawString(100, hauteur, ligne)
         hauteur -= 20
+        
+    #Ajout des équipements
+    c.drawString(300, 680, "Equipements :")
+    hauteur = 660
+    for item in equipement_personnage:
+        c.drawString(300, hauteur, f"- {item}")
+        hauteur -= 20
+
     
     # Finalisation et sauvegarde
     c.save()
