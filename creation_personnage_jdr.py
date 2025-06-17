@@ -25,19 +25,44 @@ races = {
 
 statuts = {
     "Citadin": {
-        "equipement": ["Habit simple", "Petite bourse"],
-        "talents": ["Marchandage", "Réseau"],
-        "competences": ["Commerce", "Langage", "Discrétion", "Savoir local"]
+        "equipement": ["Vêtements simples", "Petite bourse contenant ( 1 PO + 1d10 PA + 1d10 PC)", "Dague", "Cape", "Chapeau", "besace contenant un déjeuner"],
+        "talents": ["Lire / Ecrire", "Sociale", "Faire la manche", "Négociateur", "Baratin"],
+        "competences": ["Art (aux choix)", "Charme", "Marchandage", "Métier (aux choix)", "Résistance à l'alcool", "Esquive", "Escalade", "Ragot", "Pari"]
     },
     "Courtisan": {
-        "equipement": ["Tenue élégante", "Lettre de noblesse"],
-        "talents": ["Éloquence", "Manipulation"],
-        "competences": ["Étiquette", "Charme", "Langage", "Persuasion"]
+        "equipement": ["Costume Luxuex", "Dague", "Bourse contenant (1d10 PO + 1d15 PA + 1d12 PC)", "Pince à épiler", "Cure-oreille", "peigne"],
+        "talents": ["Lire / Ecrire", "Sociale", "Savoir vivre ( noble)", "Discret", "Résistance (maladie)"],
+        "competences": ["Calme", "Art (aux choix)", "Discretion (Urbaine)", "Evaluation", "Corps à corps (base)", "Dressage (chien)", "Guérison", "Savoir (politique)", "Esquive", "Chevaucher (cheval)"]
     },
     "Guerrier": {
-        "equipement": ["Armure légère", "Épée rouillée"],
-        "talents": ["Combat", "Endurance"],
-        "competences": ["Armes", "Parade", "Commandement", "Intimidation"]
+        "equipement": ["Vêtement", "Armure légère", "Arme une main + bouclier", "Arme à deux mains", "Dague", "Bourse contenant (1d8 PA + 1d10 PC)"],
+        "talents": ["Maîtrise des dés", "Guerrier-né", "déterminé", "infatigable", "Dure à cuire"],
+        "competences": ["Corp à corp (base)", "Esquive", "Chevaucher (cheval)", "pari", "Résistance", "Intuition", "Métier (Maréchal-férant)", "Métier (Homme d'arme)", "Commandement", "Intimidation", "Athlétisme"]
+    },
+    "Itinérant": {
+        "equipement": ["Vêtement", "Cape", "Dague", "Sac à dos", "boite à amadou", "couverture", "Ration (1 jour)", "Bourse contenant (1d20 PA + 1d10 PC)"],
+        "talents": ["Maîtrise des dés", "Voyageur aguerri", "Orientation", "Pêcheur", "Fuite !"],
+        "competences": ["Athlétisme", "Ragot", "Chevaucher (cheval)", "pari", "Survie en extérieur", "Intuition", "Esquive", "Navigtion", "Corp à corp (baguarre)", "Dressage (cheval)"]
+    },
+    "Lettré": {
+        "equipement": ["Vêtement", "Besace", "nécessaire d'écriture", "1d10 Feuilles de parchemins", "Dague", "Bourse contenant (1d6 PA + 1d10 PC)"],
+        "talents": ["Lire / Ecrire", "Concocter", "Maître artisan", "Orateur", "Pansement de fortune", "Studieux"],
+        "competences": ["Savoir (médecine)", "Métier (empoisonneur)", "Métier (apothicaire)", "Marchandage", "Recherche", "Métier (Ingénieur)", "Savoir (Ingénieur)", "Guérison", "Savoir (Loi)", "Savoir (Théologie)"]
+    },
+    "Riverain": {
+        "equipement": ["Cape", "Vêtement", "Dague", "Bourse contenant (1d6 PA + 1d6 PC)", "Besace", "Flasque d'alcool"],
+        "talents": ["Nageur enduant", "Pêcheur", "Bon marcheur (Marécage)", "Marinier", "Très fort"],
+        "competences": ["Corp à corp (base)", "Esquive", "Natation", "Voile", "Résistance à l'alcool", "Ramer", "Survie en extérieur", "Ragot", "Corp à corp (baguarre)", "Athlétisme"]
+    },
+    "Roublard": {
+        "equipement": ["Vêtements", "Dague", "Bourse contenant (1PO + 1d10PA + 1d10PC)", "Besace", "2 Bougies", "1d10 allumettes", "un capuchon ou un masque", "1d20 PO bijoux volés"],
+        "talents": ["Maîtrise des dés", "Tricheur", "Criminel", "Chat de gouttière", "Escroquer"],
+        "competences": ["Corp à corp (base)", "parie", "Intuition", "Intimidation", "Corp à corp (baguarre)", "Discrétion (urbaine)", "Escalade", "Escamotage", "Evaluation", "Marchandage"]
+    },
+    "Rural": {
+        "equipement": ["Cape", "Vêtement", "Dague", "Chapeau", "Bourse contenant ( 1d6PA + 1d6PC)", "Besace", "rations (1 jour)"],
+        "talents": ["Trappeur", "Orientation", "Bon marcheur (aux choix)", "Nomade", "Infatigable"],
+        "competences": ["Corp à corp (base)", "Esquive", "Chevaucher (cheval)", "Résistance", "Intuition", "Athlétisme", "Discrétion (rurale)", "Savoir (bête)", "Survie en extérieur", "Savoir (Campagne)", "Emprise sur les animaux"]
     }
 }
 
