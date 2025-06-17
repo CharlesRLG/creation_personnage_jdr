@@ -12,7 +12,7 @@ races = {
     "Humain": {
         "caracs": {"CC": 20, "CT": 20, "Force": 20, "Endurance": 20, "Initiative": 20,
                     "Agilité": 20, "Dextérité": 20, "Intelligence": 20, "Force Mentale": 20, "Sociabilité": 20, "Chance": 20},
-        "talents": ["Ambidextre", "Rapide"],
+        "talents": ["Ambidextre", "Rapide", "Dur à cuire"],
         "competences": ["Athlétisme", "Discrétion", "Équitation", "Intuition", "Langage", "piscine", ]
     },
     "Barbare": {
@@ -118,6 +118,9 @@ tk.Label(center_frame, text="Choisir 4 compétences raciales :").pack(anchor="w"
 competence_race_frame = tk.Frame(center_frame)
 competence_race_frame.pack(anchor="w")
 
+erreur_race_label = tk.Label(center_frame, text="", fg="red")
+erreur_race_label.pack(anchor="w")
+
 tk.Label(center_frame, text="Choisir un talent de statut :").pack(anchor="w")
 talent_statut_menu = ttk.Combobox(center_frame, textvariable=talent_statut_var, state="readonly")
 talent_statut_menu.pack(anchor="w")
@@ -125,6 +128,10 @@ talent_statut_menu.pack(anchor="w")
 tk.Label(center_frame, text="Choisir 3 compétences statut :").pack(anchor="w")
 competence_statut_frame = tk.Frame(center_frame)
 competence_statut_frame.pack(anchor="w")
+
+erreur_statut_label = tk.Label(center_frame, text="", fg="red")
+erreur_statut_label.pack(anchor="w")
+
 
 # --- Résumé
 summary_frame = tk.Frame(main_frame)
@@ -183,6 +190,10 @@ def limiter_choix_statut():
     for comp, var in competence_statut_vars.items():
         if not var.get():
             var.set(0 if count >= 3 else var.get())
+    if count > 3:
+        erreur_statut_label.config(text="Erreur : maximum 3 compétences de statut.")
+    else:
+        erreur_statut_label.config(text="")
     maj_resume()
 
 def limiter_choix_race():
@@ -190,8 +201,11 @@ def limiter_choix_race():
     for comp, var in competence_race_vars.items():
         if not var.get():
             var.set(0 if count >= 4 else var.get())
+    if count > 4:
+        erreur_race_label.config(text="Erreur : maximum 4 compétences raciales.")
+    else:
+        erreur_race_label.config(text="")
     maj_resume()
-
 
 def maj_race_related():
     race = races[race_var.get()]
