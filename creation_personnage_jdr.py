@@ -50,6 +50,7 @@ pnj_var = tk.BooleanVar(value=False)
 caracs = {key: tk.IntVar(value=0) for key in races["Humain"]["caracs"]}
 caracs["Chance"].set(0)  # Fixé à 0 côté interface, mais additionné avec 20 dans résumé
 points_restants = tk.StringVar(value="Points restants : 120")
+pv_var = tk.StringVar(value="PV : 0")
 competence_race_vars = {}
 competence_statut_vars = {}
 
@@ -103,6 +104,7 @@ for key, var in caracs.items():
     row.pack(anchor="w")
 
 tk.Label(left_frame, textvariable=points_restants).pack()
+tk.Label(left_frame, textvariable=pv_var).pack()
 
 # --- Colonne Centre
 center_frame = tk.Frame(main_frame)
@@ -237,6 +239,21 @@ def maj_resume():
     else:
         rdata = races[race_var.get()]
         sdata = statuts[statut_var.get()]
+        # --- Calcul des PV
+        force = races[race_var.get()]["caracs"]["Force"] + caracs["Force"].get()
+        endurance = races[race_var.get()]["caracs"]["Endurance"] + caracs["Endurance"].get()
+        fm = races[race_var.get()]["caracs"]["Force Mentale"] + caracs["Force Mentale"].get()
+
+        dure_a_cuire = (
+            "Dur à cuire" in races[race_var.get()]["talents"]
+            or talent_statut_var.get() == "Dur à cuire"
+        )
+
+        mod_endurance = 3 if dure_a_cuire else 2
+
+        pv = (force // 10 + fm // 10 + (endurance // 10) * mod_endurance) * 15
+        pv_var.set(f"PV : {pv}")
+
         texte += f"\nRace : {race_var.get()}\nStatut : {statut_var.get()}\n\n"
         texte += "Caractéristiques totales :\n"
         for key in caracs:
@@ -244,6 +261,7 @@ def maj_resume():
             mod = caracs[key].get() if key != "Chance" else 0
             total = base + mod
             texte += f" - {key} : {total}\n"
+        texte += f"\nPoints de Vie (PV) : {pv}\n"
         texte += "\nTalents raciaux : " + ", ".join(rdata["talents"]) + "\n"
         texte += "Talent de statut : " + talent_statut_var.get() + "\n"
         texte += "\nCompétences avec bonus :\n"
