@@ -12,8 +12,8 @@ races = {
     "Humain": {
         "caracs": {"CC": 20, "CT": 20, "Force": 20, "Endurance": 20, "Initiative": 20,
                     "Agilité": 20, "Dextérité": 20, "Intelligence": 20, "Force Mentale": 20, "Sociabilité": 20, "Chance": 20},
-        "talents": ["Ambidextre", "Rapide", "Dur à cuire"],
-        "competences": ["Athlétisme", "Discrétion", "Équitation", "Intuition", "Langage", "piscine", ]
+        "talents": ["Perspicace ou Sociable", "Destinée", "3 talents aléatoires"],
+        "competences": ["Calme", "Charme", "Commandement", "Corp à corp (base)", "Evaluation", "Marchandage", "Projectiles (arc)"]
     },
     "Barbare": {
         "caracs": {"CC": 30, "CT": 20, "Force": 25, "Endurance": 25, "Initiative": 20,
@@ -304,7 +304,7 @@ def maj_resume():
         texte += "\nTalents raciaux : " + ", ".join(rdata["talents"]) + "\n"
         texte += "Talent de statut : " + talent_statut_var.get() + "\n"
         texte += "\nCompétences avec bonus :\n"
-        all_comps = set(list(competence_race_vars.keys()) + list(competence_statut_vars.keys()))
+        all_comps = sorted(set(competence_race_vars.keys()) | set(competence_statut_vars.keys()))
         for comp in all_comps:
             bonus = 0
             if competence_race_vars.get(comp, tk.IntVar()).get():
@@ -313,7 +313,11 @@ def maj_resume():
                 bonus += 5
             if bonus > 0:
                 texte += f" - {comp} (+{bonus})\n"
-        texte += "\nÉquipement :\n - " + "\n - ".join(sdata["equipement"])
+
+        texte += "\nÉquipement :\n"
+        for item in sdata.get("equipement", []):
+            texte += f" - {item}\n"
+
     summary_text.config(state="normal")
     summary_text.delete("1.0", "end")
     summary_text.insert("1.0", texte)
