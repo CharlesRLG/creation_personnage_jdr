@@ -12,26 +12,14 @@ races = {
     "Humain": {
         "caracs": {"CC": 20, "CT": 20, "Force": 20, "Endurance": 20, "Initiative": 20,
                     "Agilité": 20, "Dextérité": 20, "Intelligence": 20, "Force Mentale": 20, "Sociabilité": 20, "Chance": 20},
-        "talents": ["Perspicace ou Sociable", "Destinée", "3 talents aléatoires"],
-        "competences": ["Calme", "Charme", "Commandement", "Corp à corp (base)", "Evaluation", "Langue (aux choix)", "Marchandage", "Projectile (arc)", "Ragot", "Savoir (guilde marchande)", "Soin des animaux", ]
+        "talents": ["Ambidextre", "Rapide", "Dur à cuire"],
+        "competences": ["Athlétisme", "Discrétion", "Équitation", "Intuition", "Langage", "piscine", ]
     },
     "Barbare": {
         "caracs": {"CC": 30, "CT": 20, "Force": 25, "Endurance": 25, "Initiative": 20,
                     "Agilité": 20, "Dextérité": 20, "Intelligence": 0, "Force Mentale": 20, "Sociabilité": 20, "Chance": 20},
-        "talents": ["Dure à cuire", "Destinée", "Ambidextre", "Orientation"],
-        "competences": ["Corp à corp (base)", "Evaluation", "Intimidation", "Projectiles (arc)", "Ragot", "Savoir (guerre)", "Soin des animaux", "Dressage", "Projectile (improvisé)", "Corp à corp (improvisé)"]
-    },
-    "Nain": {
-        "caracs": {"CC": 30, "CT": 20, "Force": 20, "Endurance": 40, "Initiative": 20,
-                    "Agilité": 5, "Dextérité": 5, "Intelligence": 20, "Force Mentale": 20, "Sociabilité": 20, "Chance": 20},
-        "talents": ["Déterminé ou Obstiné", "Lire / Ecrire ou Impitoyable", "Résistance à la magie", "Robuste", "Vision nocturne"],
-        "competences": ["Corp à corp (base)", "Calme", "Evaluation", "Ragot", "Savoir (géologie)", "Divertissement (Narration)", "Intimidation", "Métier (aux choix)", "Résistance", "Résistance à l'alcool", "Savoir (Métallurgie)", "Savoir (Nain)"]
-    },
-    "Ogre": {
-        "caracs": {"CC": 35, "CT": 20, "Force": 35, "Endurance": 35, "Initiative": 20,
-                    "Agilité": 20, "Dextérité": 5, "Intelligence": 5, "Force Mentale": 20, "Sociabilité": 5, "Chance": 20},
-        "talents": ["Dure à cuire", "Grand", "Frénésie", "Endurcie","Effrayant"],
-        "competences": ["Calme", "Intimidation", "Résistance", "Musicien (tambour)", "Divertissement (raillerie)", "Athlétisme", "Corp à corp (base)", "Corp à corp (bagarre)", "Résistance à l'alcool"]
+        "talents": ["Furie", "Résistance"],
+        "competences": ["Intimidation", "Survie", "Escalade", "Endurance", "Tactique"]
     }
 }
 
