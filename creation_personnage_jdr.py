@@ -32,6 +32,30 @@ races = {
                     "Agilité": 20, "Dextérité": 5, "Intelligence": 5, "Force Mentale": 20, "Sociabilité": 5, "Chance": 20},
         "talents": ["Dure à cuire", "Grand", "Frénésie", "Endurcie","Effrayant"],
         "competences": ["Calme", "Intimidation", "Résistance", "Athlétisme", "Corp à corp (base)", "Corp à corp (bagarre)", "Résistance à l'alcool"]
+    },
+    "Haut-Elfes": {
+        "caracs": {"CC": 10, "CT": 20, "Force": 10, "Endurance": 10, "Initiative": 20,
+                    "Agilité": 20, "Dextérité": 20, "Intelligence": 30, "Force Mentale": 30, "Sociabilité": 30, "Chance": 20},
+        "talents": ["Imperturbable ou Perspicace", "Lire / Ecrire", "Sens aiguisé (Vue)", "Seconde vue ou Sixième sens", "Vision nocturne"],
+        "competences": ["Corp à corp (base)", "Calme", "Commandement", "Musicien", "Projectile (Arc)", "Orientation", "Perception"]
+    },
+    "Elfes des bois": {
+        "caracs": {"CC": 20, "CT": 35, "Force": 20, "Endurance": 10, "Initiative": 20,
+                    "Agilité": 30, "Dextérité": 30, "Intelligence": 10, "Force Mentale": 20, "Sociabilité": 5, "Chance": 20},
+        "talents": ["Dure à cuire", "Lire/Ecrire ou Très résistant", "Nomade", "Sens aiguisé (vue)","Vision nocturne"],
+        "competences": ["Athlétisme", "Discrétion (rural)", "Perception", "Survie en extérieur", "Corp à corp (base)", "Projectile (Arc)", "Escalade"]
+    },
+    "Elfe noir": {
+        "caracs": {"CC": 30, "CT": 30, "Force": 20, "Endurance": 5, "Initiative": 20,
+                    "Agilité": 20, "Dextérité": 20, "Intelligence": 20, "Force Mentale": 5, "Sociabilité": 30, "Chance": 20},
+        "talents": ["Seconde vue", "Lire / Ecrire", "Orateur", "Sens aiguisé (vue)", "Vision nocturne"],
+        "competences": ["Charme", "Discrétion", "Escamotage", "Esquive", "Marchandage", "Intuition", "Perception"]
+    },
+    "Gnome": {
+        "caracs": {"CC": 5, "CT": 10, "Force": 5, "Endurance": 10, "Initiative": 20,
+                    "Agilité": 20, "Dextérité": 30, "Intelligence": 40, "Force Mentale": 40, "Sociabilité": 20, "Chance": 20},
+        "talents": ["Petit", "Détection d'artéfact", "Lecture rapide", "Vision nocturne","Doué en calcul"],
+        "competences": ["Discrétion", "Intuition", "Perception", "Projectile (Poudre)", "Marchandage", "Métier ingénieur", "Résistance à l'alcool"]
     }
 }
 
